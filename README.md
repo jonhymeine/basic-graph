@@ -9,7 +9,7 @@ O programa principal le um arquivo de entrada e cria o tipo de grafo escolhido v
 
 ## Pre-requisitos
 
-- `g++` com suporte a C++20
+- `g++` com suporte a C++17
 
 ## Estrutura Principal
 
@@ -23,7 +23,7 @@ O programa principal le um arquivo de entrada e cria o tipo de grafo escolhido v
 Na raiz do projeto:
 
 ```bash
-g++ -std=c++20 src/main.cpp src/list_graph.cpp src/matrix_graph.cpp -o main
+g++ -std=c++17 src/main.cpp src/list_graph.cpp src/matrix_graph.cpp -o main
 ```
 
 ## Executar o programa principal
@@ -68,7 +68,7 @@ from_vertex to_vertex weight
 ### Teste do MatrixGraph
 
 ```bash
-g++ -std=c++20 src/matrix_graph_test.cpp src/matrix_graph.cpp -o matrix_graph_test
+g++ -std=c++17 src/matrix_graph_test.cpp src/matrix_graph.cpp -o matrix_graph_test
 ./matrix_graph_test
 ```
 

@@ -28,7 +28,7 @@ int ListGraph::add_vertex(string label)
 
 bool ListGraph::remove_vertex(int vertex)
 {
-  if (!vertices.contains(vertex))
+  if (vertices.find(vertex) == vertices.end())
     return false;
 
   // Remove the vertex from the vertices map
@@ -54,8 +54,10 @@ bool ListGraph::remove_vertex(int vertex)
   index_to_vertex_id.erase(index_to_vertex_id.begin() + index);
 
   // Update the vertex_id_to_index mapping for remaining vertices
-  for (auto &[vertex_id, idx] : vertex_id_to_index)
+  for (auto &pair : vertex_id_to_index)
   {
+    int vertex_id = pair.first;
+    int &idx = pair.second;
     if (idx > index)
       vertex_id_to_index[vertex_id] = idx - 1;
   }
@@ -67,8 +69,10 @@ void ListGraph::print_graph()
 {
   cout << "Vertices:\n";
 
-  for (const auto &[vertex_id, label] : vertices)
+  for (const auto &pair : vertices)
   {
+    int vertex_id = pair.first;
+    string label = pair.second;
     cout << vertex_id << ": " << label << endl;
   }
 
@@ -88,7 +92,7 @@ void ListGraph::print_graph()
 vector<int> ListGraph::get_neighbors(int vertex)
 {
   vector<int> neighbors;
-  if (!vertices.contains(vertex))
+  if (vertices.find(vertex) == vertices.end())
     return neighbors;
 
   int vertex_index = vertex_id_to_index[vertex];
@@ -103,7 +107,7 @@ vector<int> ListGraph::get_neighbors(int vertex)
 
 bool ListGraph::add_edge(int from_vertex, int to_vertex, float weight)
 {
-  if (!vertices.contains(from_vertex) || !vertices.contains(to_vertex))
+  if (vertices.find(from_vertex) == vertices.end() || vertices.find(to_vertex) == vertices.end())
     return false;
 
   // Get the indices of the vertices in the adjacency list
@@ -120,7 +124,7 @@ bool ListGraph::add_edge(int from_vertex, int to_vertex, float weight)
 
 bool ListGraph::remove_edge(int from_vertex, int to_vertex)
 {
-  if (!vertices.contains(from_vertex) || !vertices.contains(to_vertex))
+  if (vertices.find(from_vertex) == vertices.end() || vertices.find(to_vertex) == vertices.end())
     return false;
 
   // Get the indices of the vertices in the adjacency list
@@ -157,7 +161,7 @@ bool ListGraph::remove_edge(int from_vertex, int to_vertex)
 
 bool ListGraph::has_edge(int from_vertex, int to_vertex)
 {
-  if (!vertices.contains(from_vertex) || !vertices.contains(to_vertex))
+  if (vertices.find(from_vertex) == vertices.end() || vertices.find(to_vertex) == vertices.end())
     return false;
 
   // Get the indices of the vertices in the adjacency list
@@ -175,7 +179,7 @@ bool ListGraph::has_edge(int from_vertex, int to_vertex)
 
 float ListGraph::get_edge_weight(int from_vertex, int to_vertex)
 {
-  if (!vertices.contains(from_vertex) || !vertices.contains(to_vertex))
+  if (vertices.find(from_vertex) == vertices.end() || vertices.find(to_vertex) == vertices.end())
     return 0;
 
   // Get the indices of the vertices in the adjacency list

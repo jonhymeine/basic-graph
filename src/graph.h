@@ -34,7 +34,7 @@ public:
 
   string get_vertex_label(int vertex)
   {
-    if (vertices.contains(vertex))
+    if (vertices.find(vertex) != vertices.end())
       return vertices[vertex];
 
     return "";
