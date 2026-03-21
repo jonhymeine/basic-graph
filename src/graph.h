@@ -22,7 +22,7 @@ public:
     this->is_weighted = is_weighted;
   }
 
-  virtual int add_vertex(string label) = 0;
+  virtual int add_vertex(string label = "") = 0;
   virtual bool remove_vertex(int vertex) = 0;
   virtual void print_graph() = 0;
   virtual vector<int> get_neighbors(int vertex) = 0;
