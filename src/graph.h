@@ -21,12 +21,12 @@ public:
     this->is_weighted = is_weighted;
   }
 
-  virtual int add_vertex(string label = "") = 0;
+  virtual int add_vertex(string label) = 0;
   virtual bool remove_vertex(int vertex) = 0;
   virtual void print_graph() = 0;
   virtual vector<int> get_neighbors(int vertex) = 0;
 
-  virtual bool add_edge(int from_vertex, int to_vertex, int weight = 1) = 0;
+  virtual bool add_edge(int from_vertex, int to_vertex, int weight) = 0;
   virtual bool remove_edge(int from_vertex, int to_vertex) = 0;
   virtual bool has_edge(int from_vertex, int to_vertex) = 0;
   virtual int get_edge_weight(int from_vertex, int to_vertex) = 0;
