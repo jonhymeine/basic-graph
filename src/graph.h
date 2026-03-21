@@ -35,9 +35,8 @@ public:
   string get_vertex_label(int vertex)
   {
     if (vertices.contains(vertex))
-    {
       return vertices[vertex];
-    }
+
     return "";
   }
 };
