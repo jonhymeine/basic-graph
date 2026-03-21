@@ -13,6 +13,7 @@ protected:
   bool is_directed;
   bool is_weighted;
   unordered_map<int, string> vertices;
+  int new_vertex_id = 0;
 
 public:
   Graph(bool is_directed = false, bool is_weighted = false)
