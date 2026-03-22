@@ -11,6 +11,7 @@
 #include "list_graph.h"
 #include "matrix_graph.h"
 #include "bfs.h"
+#include "dfs.h"
 
 using namespace std;
 
@@ -91,11 +92,19 @@ int main(int argc, char *argv[])
 
   unique_ptr<Graph> graph(build_graph_from_file(filename, type));
 
+  // Imprime a matriz/lista como você já estava fazendo
   graph->print_graph();
 
   cout << endl;
 
   bfs(graph.get(), 0);
   
+  // --- ADICIONE AS LINHAS ABAIXO ---
+  cout << "\nIniciando Busca em Profundidade (DFS) a partir do vertice 0:" << endl;
+  
+  // Chamamos o método estático da classe DFS que você criou no dfs.h
+  DFS::execute(graph.get(), 0); 
+  // --------------------------------
+
   return 0;
 }
