@@ -10,6 +10,7 @@
 #include "graph.h"
 #include "list_graph.h"
 #include "matrix_graph.h"
+#include "bfs.h"
 
 using namespace std;
 
@@ -91,5 +92,10 @@ int main(int argc, char *argv[])
   unique_ptr<Graph> graph(build_graph_from_file(filename, type));
 
   graph->print_graph();
+
+  cout << endl;
+
+  bfs(graph.get(), 0);
+  
   return 0;
 }
