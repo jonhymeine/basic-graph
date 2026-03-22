@@ -115,9 +115,9 @@ bool ListGraph::add_edge(int from_vertex, int to_vertex, float weight)
   int to_index = vertex_id_to_index[to_vertex];
 
   // Add the edge with the specified weight
-  adjacency_list[from_index].push_back({to_index, weight});
+  adjacency_list[from_index].push_back({to_vertex, weight});
   if (!is_directed)
-    adjacency_list[to_index].push_back({from_index, weight});
+    adjacency_list[to_index].push_back({from_vertex, weight});
 
   return true;
 }
@@ -135,7 +135,7 @@ bool ListGraph::remove_edge(int from_vertex, int to_vertex)
   auto &edges_from = adjacency_list[from_index];
   for (auto it = edges_from.begin(); it != edges_from.end(); it++)
   {
-    if (it->to_vertex == to_index)
+    if (it->to_vertex == to_vertex)
     {
       it = edges_from.erase(it); // Remove edge to the target vertex
       break;                     // Exit the loop after removing the edge
@@ -148,7 +148,7 @@ bool ListGraph::remove_edge(int from_vertex, int to_vertex)
     auto &edges_to = adjacency_list[to_index];
     for (auto it = edges_to.begin(); it != edges_to.end(); it++)
     {
-      if (it->to_vertex == from_index)
+      if (it->to_vertex == from_vertex)
       {
         it = edges_to.erase(it); // Remove edge to the target vertex
         break;                   // Exit the loop after removing the edge
@@ -191,6 +191,17 @@ float ListGraph::get_edge_weight(int from_vertex, int to_vertex)
     if (edge.to_vertex == to_vertex)
       return edge.weight;
   }
-
   return 0;
+}
+
+vector<int> ListGraph::get_vertices()
+{
+  vector<int> result;
+
+  for (const auto &pair : vertices)
+  {
+    result.push_back(pair.first);
+  }
+
+  return result;
 }
