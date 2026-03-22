@@ -26,6 +26,7 @@ public:
   virtual bool remove_vertex(int vertex) = 0;
   virtual void print_graph() = 0;
   virtual vector<int> get_neighbors(int vertex) = 0;
+  virtual vector<int> get_vertices() = 0;
 
   virtual bool add_edge(int from_vertex, int to_vertex, float weight) = 0;
   virtual bool remove_edge(int from_vertex, int to_vertex) = 0;

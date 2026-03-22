@@ -153,3 +153,15 @@ float MatrixGraph::get_edge_weight(int from_vertex, int to_vertex)
 
   return adjacency_matrix[from_index][to_index];
 }
+
+vector<int> MatrixGraph::get_vertices()
+{
+  vector<int> result;
+
+  for (const auto &pair : vertices)
+  {
+    result.push_back(pair.first);
+  }
+
+  return result;
+}

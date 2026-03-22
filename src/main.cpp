@@ -12,6 +12,7 @@
 #include "matrix_graph.h"
 #include "bfs.h"
 #include "dfs.h"
+#include "dijkstra.h"
 
 using namespace std;
 
@@ -102,6 +103,8 @@ int main(int argc, char *argv[])
   bfs(graph.get(), 0);
   cout << endl;
   DFS::execute(graph.get(), 0);
+  cout << endl;
+  dijkstra(graph.get(), 0);
 
   return 0;
 }

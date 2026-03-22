@@ -27,6 +27,7 @@ public:
   bool remove_vertex(int vertex) override;
   void print_graph() override;
   vector<int> get_neighbors(int vertex) override;
+  vector<int> get_vertices() override;
 
   bool add_edge(int from_vertex, int to_vertex, float weight = 1) override;
   bool remove_edge(int from_vertex, int to_vertex) override;
