@@ -14,7 +14,7 @@ void bfs(Graph* graph, int start_vertex)
         return;
 
     unordered_set<int> visited;
-    queue<int> q;
+    queue<int> q; // q = fila
 
     visited.insert(start_vertex);
     q.push(start_vertex);

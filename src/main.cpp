@@ -97,14 +97,11 @@ int main(int argc, char *argv[])
 
   cout << endl;
 
+  cout << "Execucao dos algoritmos:";
+  cout << endl;
   bfs(graph.get(), 0);
-  
-  // --- ADICIONE AS LINHAS ABAIXO ---
-  cout << "\nIniciando Busca em Profundidade (DFS) a partir do vertice 0:" << endl;
-  
-  // Chamamos o método estático da classe DFS que você criou no dfs.h
-  DFS::execute(graph.get(), 0); 
-  // --------------------------------
+  cout << endl;
+  DFS::execute(graph.get(), 0);
 
   return 0;
 }

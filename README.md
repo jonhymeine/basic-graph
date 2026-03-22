@@ -16,6 +16,7 @@ O programa principal le um arquivo de entrada e cria o tipo de grafo escolhido v
 - `src/main.cpp`: leitura do arquivo e criacao do grafo
 - `src/matrix_graph.cpp` e `src/matrix_graph.h`: implementacao em matriz
 - `src/list_graph.cpp` e `src/list_graph.h`: implementacao em lista
+- `src/bfs.h` e `src/dfs.h`: algoritmos de busca
 - `graph_examples/`: exemplos de arquivos de entrada
 
 ## Compilar o programa principal

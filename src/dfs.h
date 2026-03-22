@@ -14,7 +14,7 @@ public:
         }
 
         std::unordered_map<int, bool> visited;
-        std::cout << "Ordem de visita: ";
+        std::cout << "DFS: ";
         dfs_recursive(graph, start_vertex, visited);
         std::cout << std::endl;
     }
