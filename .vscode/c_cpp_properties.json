@@ -5,7 +5,7 @@
       "includePath": [
         "${workspaceFolder}/**"
       ],
-      "cppStandard": "gnu++20",
+      "cppStandard": "gnu++17",
       "intelliSenseMode": "linux-gcc-x64"
     }
   ],
