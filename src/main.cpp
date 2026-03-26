@@ -4,8 +4,6 @@
 #include <string>
 #include <fstream>
 #include <sstream>
-#include <algorithm>
-#include <cctype>
 
 #include "graph.h"
 #include "list_graph.h"
