@@ -93,7 +93,6 @@ int main(int argc, char *argv[])
 
   unique_ptr<Graph> graph(build_graph_from_file(filename, type));
 
-  // Imprime a matriz/lista como você já estava fazendo
   graph->print_graph();
 
   cout << endl;
