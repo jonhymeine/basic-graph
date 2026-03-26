@@ -32,7 +32,7 @@ void bfs(Graph* graph, int start_vertex)
 
         for (int neighbor : neighbors)
         {
-            if (!visited.contains(neighbor))
+            if (visited.find(neighbor) == visited.end())
             {
                 visited.insert(neighbor);
                 q.push(neighbor);
