@@ -65,15 +65,6 @@ bool MatrixGraph::remove_vertex(int vertex)
 
 void MatrixGraph::print_graph()
 {
-  cout << "Vertices:\n";
-
-  for (const auto &pair : vertices)
-  {
-    int vertex_id = pair.first;
-    string label = pair.second;
-    cout << vertex_id << ": " << label << endl;
-  }
-
   cout << "Adjacency Matrix:\nindex\t";
 
   for (const int vertex_id : index_to_vertex_id)

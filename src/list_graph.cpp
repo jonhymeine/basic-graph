@@ -67,15 +67,6 @@ bool ListGraph::remove_vertex(int vertex)
 
 void ListGraph::print_graph()
 {
-  cout << "Vertices:\n";
-
-  for (const auto &pair : vertices)
-  {
-    int vertex_id = pair.first;
-    string label = pair.second;
-    cout << vertex_id << ": " << label << endl;
-  }
-
   cout << "Adjacency List:\n";
 
   for (int i = 0; i < adjacency_list.size(); i++)
