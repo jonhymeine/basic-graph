@@ -40,6 +40,11 @@ public:
 
     return "";
   }
+
+  int get_vertices_count()
+  {
+    return vertices.size();
+  }
 };
 
 #endif
