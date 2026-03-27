@@ -80,16 +80,28 @@ GraphType parse_graph_type(string type_text)
 
 int main(int argc, char *argv[])
 {
-  if (argc != 3)
+  if (argc < 3)
   {
-    cerr << "Usage: " << argv[0] << " <file> <list|matrix>" << endl;
+    cerr << "Usage: " << argv[0] << " <file> <list|matrix> <start_vertex>" << endl;
+    return 1;
+  }
+  else if (argc > 4)
+  {
+    cerr << "Too many arguments. Usage: " << argv[0] << " <file> <list|matrix> <start_vertex>" << endl;
     return 1;
   }
 
   const string filename = argv[1];
   const GraphType type = parse_graph_type(argv[2]);
+  const int start_vertex = stoi(argv[3]);
 
   unique_ptr<Graph> graph(build_graph_from_file(filename, type));
+
+  if (start_vertex < 0 || start_vertex >= graph->get_vertices_count())
+  {
+    cerr << "Invalid start vertex: " << start_vertex << ". It should be between 0 and " << graph->get_vertices_count() - 1 << "." << endl;
+    return 1;
+  }
 
   graph->print_graph();
 
@@ -97,11 +109,11 @@ int main(int argc, char *argv[])
 
   cout << "Execucao dos algoritmos:";
   cout << endl;
-  bfs(graph.get(), 0);
+  bfs(graph.get(), start_vertex);
   cout << endl;
-  DFS::execute(graph.get(), 0);
+  DFS::execute(graph.get(), start_vertex);
   cout << endl;
-  dijkstra(graph.get(), 0);
+  dijkstra(graph.get(), start_vertex);
 
   return 0;
 }
