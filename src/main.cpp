@@ -11,6 +11,7 @@
 #include "bfs.h"
 #include "dfs.h"
 #include "dijkstra.h"
+#include "greedy_coloring.h"
 
 using namespace std;
 
@@ -114,6 +115,8 @@ int main(int argc, char *argv[])
   DFS::execute(graph.get(), start_vertex);
   cout << endl;
   dijkstra(graph.get(), start_vertex);
+  cout << endl;
+  greedy_coloring(graph.get());
 
   return 0;
 }
