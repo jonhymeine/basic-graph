@@ -59,7 +59,7 @@ void greedy_coloring(Graph* graph)
     double duration =
         duration_cast<microseconds>(end - start).count() / 1000.0;
 
-    cout << "===== GULOSO =====" << endl;
+    cout << "Métodos de força bruta: Algoritmo Guloso" << endl;
     cout << "Cores utilizadas: " << max_color + 1 << endl;
     cout << "Tempo: " << duration << " ms" << endl;
 
