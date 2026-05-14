@@ -13,6 +13,7 @@
 #include "dijkstra.h"
 #include "greedy_coloring.h"
 #include "welsh_powell.h"
+#include "dsatur.h"
 
 using namespace std;
 
@@ -121,6 +122,7 @@ int main(int argc, char *argv[])
   cout << endl;
   welsh_powell(graph.get());
   cout << endl;
+  dsatur(graph.get());
 
   return 0;
 }
