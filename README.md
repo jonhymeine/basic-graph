@@ -46,6 +46,14 @@ make test-matrix
 
 Os alvos `test-list` e `test-matrix` compilam os binarios de teste em `build/test-list.o` e `build/test-matrix.o`.
 
+## Build com g++
+
+Na raiz do projeto execute:
+
+```bash
+g++ -std=c++17 src/main.cpp src/list_graph.cpp src/matrix_graph.cpp -o main
+```
+
 ## Executar o programa principal
 
 Depois do build:
