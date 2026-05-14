@@ -12,6 +12,7 @@
 #include "dfs.h"
 #include "dijkstra.h"
 #include "greedy_coloring.h"
+#include "welsh_powell.h"
 
 using namespace std;
 
@@ -117,6 +118,9 @@ int main(int argc, char *argv[])
   dijkstra(graph.get(), start_vertex);
   cout << endl;
   greedy_coloring(graph.get());
+  cout << endl;
+  welsh_powell(graph.get());
+  cout << endl;
 
   return 0;
 }

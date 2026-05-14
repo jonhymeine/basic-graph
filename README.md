@@ -17,7 +17,7 @@ O programa principal lê um arquivo de entrada e cria o tipo de grafo escolhido 
 - `src/matrix_graph.cpp` e `src/matrix_graph.h`: implementacao em matriz
 - `src/list_graph.cpp` e `src/list_graph.h`: implementacao em lista
 - `src/bfs.h`, `src/dfs.h` e `src/dijkstra.h`: algoritmos de busca
-- `src/greedy_coloring.h`: algoritmos de força bruta
+- `src/greedy_coloring.h`, `src/welsh.powell.h`: algoritmos de força bruta
 - `graph_examples/`: exemplos de arquivos de entrada
 
 ## Build com Makefile
