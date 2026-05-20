@@ -13,6 +13,8 @@
 #include "search_algorithms/dfs.h"
 #include "search_algorithms/dijkstra.h"
 
+#include "minimum_spanning_tree_algorithms/prim.h"
+
 #include "coloring_algorithms/greedy_coloring.h"
 #include "coloring_algorithms/welsh_powell.h"
 #include "coloring_algorithms/dsatur.h"
@@ -88,12 +90,12 @@ int main(int argc, char *argv[])
 {
   if (argc < 4)
   {
-    cerr << "Usage:\n  Search: " << argv[0] << " <file> <list|matrix> search <start_vertex>\n  Coloring: " << argv[0] << " <file> <list|matrix> coloring" << endl;
+    cerr << "Usage:\n  Search: " << argv[0] << " <file> <list|matrix> search <start_vertex>\n  Coloring: " << argv[0] << " <file> <list|matrix> coloring\n  MST: " << argv[0] << " <file> <list|matrix> mst" << endl;
     return 1;
   }
   else if (argc > 5)
   {
-    cerr << "Too many arguments. See usage: " << argv[0] << " <file> <list|matrix> [search <start_vertex> | coloring]" << endl;
+    cerr << "Too many arguments. See usage: " << argv[0] << " <file> <list|matrix> [search <start_vertex> | coloring | mst]" << endl;
     return 1;
   }
 
@@ -101,9 +103,9 @@ int main(int argc, char *argv[])
   const GraphType type = parse_graph_type(argv[2]);
   const string mode = argv[3];
 
-  if (mode != "search" && mode != "coloring")
+  if (mode != "search" && mode != "coloring" && mode != "mst")
   {
-    cerr << "Invalid mode '" << mode << "'. Use 'search' or 'coloring'." << endl;
+    cerr << "Invalid mode '" << mode << "'. Use 'search', 'coloring' or 'mst'." << endl;
     return 1;
   }
 
@@ -113,9 +115,9 @@ int main(int argc, char *argv[])
     return 1;
   }
 
-  if (mode == "coloring" && argc != 4)
+  if ((mode == "coloring" || mode == "mst") && argc != 4)
   {
-    cerr << "Coloring mode does not take a start vertex. Usage: " << argv[0] << " <file> <list|matrix> coloring" << endl;
+    cerr << "This mode does not take a start vertex. Usage: " << argv[0] << " <file> <list|matrix> " << mode << endl;
     return 1;
   }
 
@@ -144,6 +146,12 @@ int main(int argc, char *argv[])
     }
   }
 
+  if (mode == "mst" && graph->is_directed_graph())
+  {
+    cerr << "MST mode requires an undirected graph. Use a file with is_directed = 0." << endl;
+    return 1;
+  }
+
   graph->print_graph();
 
   cout << endl;
@@ -168,6 +176,12 @@ int main(int argc, char *argv[])
     dsatur(graph.get());
     cout << endl;
     brute_force(graph.get());
+    cout << endl;
+  }
+  else if (mode == "mst")
+  {
+    PrimMSTResult result = prim_mst(graph.get());
+    print_prim_mst_result(graph.get(), result);
     cout << endl;
   }
 

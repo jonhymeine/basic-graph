@@ -22,6 +22,8 @@ O programa principal lê um arquivo de entrada, cria o tipo de grafo escolhido v
   - `bfs.h`
   - `dfs.h`
   - `dijkstra.h`
+- `src/minimum_spanning_tree_algorithms/`: algoritmo de arvore geradora minima
+  - `prim.h`
 - `src/coloring_algorithms/`: algoritmos de coloracao de grafos
   - `greedy_coloring.h`
   - `welsh_powell.h`
@@ -65,6 +67,7 @@ Depois do build:
 ```bash
 ./build/main.o <arquivo> <list|matrix> search <start_vertex>
 ./build/main.o <arquivo> <list|matrix> coloring
+./build/main.o <arquivo> <list|matrix> mst
 ```
 
 Exemplos:
@@ -78,6 +81,9 @@ Exemplos:
 
 - `search`: executa `bfs`, `dfs` e `dijkstra` a partir do vértice inicial informado.
 - `coloring`: executa `greedy_coloring`, `welsh_powell`, `dsatur` e `brute_force`.
+- `mst`: executa o algoritmo de Prim e exibe a árvore geradora mínima, a soma das arestas e o tempo de execução.
+
+O modo `mst` exige um grafo nao direcionado (`is_directed = 0`).
 
 No modo `search`, o argumento `<start_vertex>` é obrigatório.
 No modo `coloring`, esse argumento não deve ser informado.

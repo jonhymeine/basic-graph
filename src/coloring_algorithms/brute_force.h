@@ -1,3 +1,6 @@
+#ifndef BRUTE_FORCE_H
+#define BRUTE_FORCE_H
+
 #include <iostream>
 #include <chrono>
 #include <vector>
@@ -102,3 +105,5 @@ void brute_force(Graph *graph)
     cout << endl;
   }
 }
+
+#endif

@@ -4,7 +4,7 @@
 #include <string>
 #include <vector>
 
-#include "list_graph.h"
+#include "../graph/list_graph.h"
 
 using namespace std;
 
