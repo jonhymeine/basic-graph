@@ -41,6 +41,16 @@ public:
     return "";
   }
 
+  bool is_directed_graph() const
+  {
+    return is_directed;
+  }
+
+  bool is_weighted_graph() const
+  {
+    return is_weighted;
+  }
+
   int get_vertices_count()
   {
     return vertices.size();
