@@ -1,18 +1,17 @@
-#ifndef WELSH_POWELL_H
-#define WELSH_POWELL_H
+#ifndef GREEDY_COLORING_H
+#define GREEDY_COLORING_H
 
 #include <iostream>
 #include <vector>
 #include <unordered_map>
-#include <algorithm>
 #include <chrono>
 
-#include "graph.h"
+#include "../graph/graph.h"
 
 using namespace std;
 using namespace std::chrono;
 
-void welsh_powell(Graph* graph)
+void greedy_coloring(Graph* graph)
 {
     if (!graph)
         return;
@@ -22,14 +21,6 @@ void welsh_powell(Graph* graph)
     unordered_map<int, int> colors;
 
     vector<int> vertices = graph->get_vertices();
-
-    sort(vertices.begin(),
-         vertices.end(),
-         [&](int a, int b)
-         {
-             return graph->get_neighbors(a).size() >
-                    graph->get_neighbors(b).size();
-         });
 
     for (int vertex : vertices)
     {
@@ -68,7 +59,7 @@ void welsh_powell(Graph* graph)
     double duration =
         duration_cast<microseconds>(end - start).count() / 1000.0;
 
-    cout << "Metodos de forca bruta: Algoritmo Welsh-Powell" << endl;
+    cout << "Metodos de forca bruta: Algoritmo Guloso" << endl;
     cout << "Cores utilizadas: " << max_color + 1 << endl;
     cout << "Tempo: " << duration << " ms" << endl;
 

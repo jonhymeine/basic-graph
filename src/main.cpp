@@ -5,15 +5,17 @@
 #include <fstream>
 #include <sstream>
 
-#include "graph.h"
-#include "list_graph.h"
-#include "matrix_graph.h"
-#include "bfs.h"
-#include "dfs.h"
-#include "dijkstra.h"
-#include "greedy_coloring.h"
-#include "welsh_powell.h"
-#include "dsatur.h"
+#include "graph/graph.h"
+#include "graph/list_graph.h"
+#include "graph/matrix_graph.h"
+
+#include "search_algorithms/bfs.h"
+#include "search_algorithms/dfs.h"
+#include "search_algorithms/dijkstra.h"
+
+#include "coloring_algorithms/greedy_coloring.h"
+#include "coloring_algorithms/welsh_powell.h"
+#include "coloring_algorithms/dsatur.h"
 
 using namespace std;
 
