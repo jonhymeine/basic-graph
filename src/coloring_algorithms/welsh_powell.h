@@ -19,10 +19,9 @@ void welsh_powell(Graph* graph)
 
     auto start = high_resolution_clock::now();
 
-    unordered_map<int, int> colors;
-
     vector<int> vertices = graph->get_vertices();
 
+    // ordena por decrescente
     sort(vertices.begin(),
          vertices.end(),
          [&](int a, int b)
@@ -31,29 +30,62 @@ void welsh_powell(Graph* graph)
                     graph->get_neighbors(b).size();
          });
 
+    unordered_map<int, int> colors;
+
+    // inicia sem cor
     for (int vertex : vertices)
     {
-        vector<bool> unavailable(vertices.size(), false);
+        colors[vertex] = -1;
+    }
 
-        vector<int> neighbors = graph->get_neighbors(vertex);
+    int current_color = 0;
 
-        for (int neighbor : neighbors)
+    // vertice sem cor
+    while (true)
+    {
+        bool has_uncolored = false;
+
+        for (int vertex : vertices)
         {
-            if (colors.find(neighbor) != colors.end())
+            if (colors[vertex] == -1)
             {
-                unavailable[colors[neighbor]] = true;
+                has_uncolored = true;
+                break;
             }
         }
 
-        int color;
+        if (!has_uncolored)
+            break;
 
-        for (color = 0; color < vertices.size(); color++)
+        // percorre todos vertices sem cor e tenta colorir com a cor atual
+        for (int vertex : vertices)
         {
-            if (!unavailable[color])
-                break;
+            if (colors[vertex] != -1)
+                continue;
+
+            bool can_color = true;
+
+            vector<int> neighbors =
+                graph->get_neighbors(vertex);
+
+            // tem vizinho com mesma cor = não pode colorir
+            for (int neighbor : neighbors)
+            {
+                if (colors[neighbor] == current_color)
+                {
+                    can_color = false;
+                    break;
+                }
+            }
+
+            // insere cor atual
+            if (can_color)
+            {
+                colors[vertex] = current_color;
+            }
         }
 
-        colors[vertex] = color;
+        current_color++;
     }
 
     int max_color = 0;
@@ -69,8 +101,12 @@ void welsh_powell(Graph* graph)
         duration_cast<microseconds>(end - start).count() / 1000.0;
 
     cout << "Welsh-Powell" << endl;
-    cout << "Number of colors used: " << max_color + 1 << endl;
-    cout << "Time: " << duration << " ms" << endl;
+    cout << "Number of colors used: "
+         << max_color + 1 << endl;
+
+    cout << "Time: "
+         << duration
+         << " ms" << endl;
 
     if (graph->get_vertices_count() < 10)
     {
