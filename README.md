@@ -13,12 +13,24 @@ O programa principal lê um arquivo de entrada e cria o tipo de grafo escolhido 
 
 ## Estrutura Principal
 
-- `src/main.cpp`: leitura do arquivo e criacao do grafo
-- `src/matrix_graph.cpp` e `src/matrix_graph.h`: implementacao em matriz
-- `src/list_graph.cpp` e `src/list_graph.h`: implementacao em lista
-- `src/bfs.h`, `src/dfs.h` e `src/dijkstra.h`: algoritmos de busca
-- `src/greedy_coloring.h`, `src/welsh.powell.h`, `src/dsatur.h`: algoritmos de força bruta
+- `src/main.cpp`: ponto de entrada da aplicacao
+- `src/graph/`: implementacoes e interfaces dos grafos
+  - `graph.h`
+  - `list_graph.h` e `list_graph.cpp`
+  - `matrix_graph.h` e `matrix_graph.cpp`
+- `src/search_algorithms/`: algoritmos de busca e caminho minimo
+  - `bfs.h`
+  - `dfs.h`
+  - `dijkstra.h`
+- `src/coloring_algorithms/`: algoritmos de coloracao de grafos
+  - `greedy_coloring.h`
+  - `welsh_powell.h`
+  - `dsatur.h`
+- `src/unit_tests/`: testes unitarios das estruturas de grafo
+  - `list_graph_test.cpp`
+  - `matrix_graph_test.cpp`
 - `graph_examples/`: exemplos de arquivos de entrada
+- `build/`: saida gerada pelo Makefile
 
 ## Build com Makefile
 
@@ -31,8 +43,8 @@ make main
 Esse comando:
 
 - cria a pasta `build/`
-- compila `src/list_graph.cpp` em `build/list_graph.o`
-- compila `src/matrix_graph.cpp` em `build/matrix_graph.o`
+- compila `src/graph/list_graph.cpp` em `build/list_graph.o`
+- compila `src/graph/matrix_graph.cpp` em `build/matrix_graph.o`
 - gera o executavel principal em `build/main.o`
 
 Outros alvos disponiveis:
@@ -46,23 +58,9 @@ make test-matrix
 
 Os alvos `test-list` e `test-matrix` compilam os binarios de teste em `build/test-list.o` e `build/test-matrix.o`.
 
-## Build com g++
-
-Na raiz do projeto execute:
-
-```bash
-g++ -std=c++17 src/main.cpp src/list_graph.cpp src/matrix_graph.cpp -o main
-```
-
 ## Executar o programa principal
 
 Depois do build:
-
-```bash
-./build/main.o <arquivo> <list|matrix>
-```
-
-Uso:
 
 ```bash
 ./build/main.o <arquivo> <list|matrix>
