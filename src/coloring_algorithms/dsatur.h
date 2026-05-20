@@ -21,30 +21,55 @@ void dsatur(Graph* graph)
 
     vector<int> vertices = graph->get_vertices();
 
+    // grau decrescente para desempate inicial
+    sort(vertices.begin(),
+         vertices.end(),
+         [&](int a, int b)
+         {
+             return graph->get_neighbors(a).size() >
+                    graph->get_neighbors(b).size();
+         });
+
     unordered_map<int, int> colors;
     unordered_map<int, int> saturation;
 
+    // inicializa sem cor e saturação zero
     for (int vertex : vertices)
     {
         colors[vertex] = -1;
         saturation[vertex] = 0;
     }
 
+    // vertice de maior grau = primeiro a ser colorido
+    int first_vertex = vertices[0];
+    colors[first_vertex] = 0;
+
+    // atualiza saturação dos vizinhos do primeiro vértice
+    for (int neighbor : graph->get_neighbors(first_vertex))
+    {
+        saturation[neighbor] = 1;
+    }
+
+    // enquanto vertice = sem cor
     while (true)
     {
         int selected = -1;
         int highest_saturation = -1;
         int highest_degree = -1;
 
+        // pega maior saturation
         for (int vertex : vertices)
         {
             if (colors[vertex] != -1)
                 continue;
 
-            int current_saturation = saturation[vertex];
+            int current_saturation =
+                saturation[vertex];
+
             int current_degree =
                 graph->get_neighbors(vertex).size();
 
+            // desempata por maior grau se empatar
             if (current_saturation > highest_saturation ||
                (current_saturation == highest_saturation &&
                 current_degree > highest_degree))
@@ -60,10 +85,9 @@ void dsatur(Graph* graph)
 
         vector<bool> unavailable(vertices.size(), false);
 
-        vector<int> neighbors =
-            graph->get_neighbors(selected);
-
-        for (int neighbor : neighbors)
+        // cores dos vizinhos = indisponíveis
+        for (int neighbor :
+             graph->get_neighbors(selected))
         {
             if (colors[neighbor] != -1)
             {
@@ -71,9 +95,12 @@ void dsatur(Graph* graph)
             }
         }
 
+        // cor disponivel mais baixa
         int color;
 
-        for (color = 0; color < vertices.size(); color++)
+        for (color = 0;
+             color < vertices.size();
+             color++)
         {
             if (!unavailable[color])
                 break;
@@ -81,16 +108,16 @@ void dsatur(Graph* graph)
 
         colors[selected] = color;
 
-        for (int neighbor : neighbors)
+        // continua loop atualizando saturação dos vizinhos sem cor
+        for (int neighbor :
+             graph->get_neighbors(selected))
         {
             if (colors[neighbor] == -1)
             {
                 vector<bool> used(vertices.size(), false);
 
-                vector<int> neighbor_neighbors =
-                    graph->get_neighbors(neighbor);
-
-                for (int nn : neighbor_neighbors)
+                for (int nn :
+                     graph->get_neighbors(neighbor))
                 {
                     if (colors[nn] != -1)
                     {
@@ -124,8 +151,12 @@ void dsatur(Graph* graph)
         duration_cast<microseconds>(end - start).count() / 1000.0;
 
     cout << "DSATUR" << endl;
-    cout << "Number of colors used: " << max_color + 1 << endl;
-    cout << "Time: " << duration << " ms" << endl;
+    cout << "Number of colors used: "
+         << max_color + 1 << endl;
+
+    cout << "Time: "
+         << duration
+         << " ms" << endl;
 
     if (graph->get_vertices_count() < 10)
     {
