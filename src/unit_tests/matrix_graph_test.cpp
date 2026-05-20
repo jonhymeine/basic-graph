@@ -4,7 +4,7 @@
 #include <string>
 #include <vector>
 
-#include "matrix_graph.h"
+#include "../graph/matrix_graph.h"
 
 using namespace std;
 
