@@ -16,6 +16,7 @@
 #include "coloring_algorithms/greedy_coloring.h"
 #include "coloring_algorithms/welsh_powell.h"
 #include "coloring_algorithms/dsatur.h"
+#include "coloring_algorithms/brute_force.h"
 
 using namespace std;
 
@@ -85,27 +86,62 @@ GraphType parse_graph_type(string type_text)
 
 int main(int argc, char *argv[])
 {
-  if (argc < 3)
+  if (argc < 4)
   {
-    cerr << "Usage: " << argv[0] << " <file> <list|matrix> <start_vertex>" << endl;
+    cerr << "Usage:\n  Search: " << argv[0] << " <file> <list|matrix> search <start_vertex>\n  Coloring: " << argv[0] << " <file> <list|matrix> coloring" << endl;
     return 1;
   }
-  else if (argc > 4)
+  else if (argc > 5)
   {
-    cerr << "Too many arguments. Usage: " << argv[0] << " <file> <list|matrix> <start_vertex>" << endl;
+    cerr << "Too many arguments. See usage: " << argv[0] << " <file> <list|matrix> [search <start_vertex> | coloring]" << endl;
     return 1;
   }
 
   const string filename = argv[1];
   const GraphType type = parse_graph_type(argv[2]);
-  const int start_vertex = stoi(argv[3]);
+  const string mode = argv[3];
+
+  if (mode != "search" && mode != "coloring")
+  {
+    cerr << "Invalid mode '" << mode << "'. Use 'search' or 'coloring'." << endl;
+    return 1;
+  }
+
+  if (mode == "search" && argc != 5)
+  {
+    cerr << "Search mode requires a start vertex. Usage: " << argv[0] << " <file> <list|matrix> search <start_vertex>" << endl;
+    return 1;
+  }
+
+  if (mode == "coloring" && argc != 4)
+  {
+    cerr << "Coloring mode does not take a start vertex. Usage: " << argv[0] << " <file> <list|matrix> coloring" << endl;
+    return 1;
+  }
+
+  int start_vertex = -1;
+  if (mode == "search")
+  {
+    try
+    {
+      start_vertex = stoi(argv[4]);
+    }
+    catch (...)
+    {
+      cerr << "Invalid start vertex: must be an integer." << endl;
+      return 1;
+    }
+  }
 
   unique_ptr<Graph> graph(build_graph_from_file(filename, type));
 
-  if (start_vertex < 0 || start_vertex >= graph->get_vertices_count())
+  if (mode == "search")
   {
-    cerr << "Invalid start vertex: " << start_vertex << ". It should be between 0 and " << graph->get_vertices_count() - 1 << "." << endl;
-    return 1;
+    if (start_vertex < 0 || start_vertex >= graph->get_vertices_count())
+    {
+      cerr << "Invalid start vertex: " << start_vertex << ". It should be between 0 and " << graph->get_vertices_count() - 1 << "." << endl;
+      return 1;
+    }
   }
 
   graph->print_graph();
@@ -114,17 +150,26 @@ int main(int argc, char *argv[])
 
   cout << "Execucao dos algoritmos:";
   cout << endl;
-  bfs(graph.get(), start_vertex);
-  cout << endl;
-  DFS::execute(graph.get(), start_vertex);
-  cout << endl;
-  dijkstra(graph.get(), start_vertex);
-  cout << endl;
-  greedy_coloring(graph.get());
-  cout << endl;
-  welsh_powell(graph.get());
-  cout << endl;
-  dsatur(graph.get());
+  if (mode == "search")
+  {
+    bfs(graph.get(), start_vertex);
+    cout << endl;
+    DFS::execute(graph.get(), start_vertex);
+    cout << endl;
+    dijkstra(graph.get(), start_vertex);
+    cout << endl;
+  }
+  else if (mode == "coloring")
+  {
+    greedy_coloring(graph.get());
+    cout << endl;
+    welsh_powell(graph.get());
+    cout << endl;
+    dsatur(graph.get());
+    cout << endl;
+    brute_force(graph.get());
+    cout << endl;
+  }
 
   return 0;
 }

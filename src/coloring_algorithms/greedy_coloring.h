@@ -59,19 +59,19 @@ void greedy_coloring(Graph* graph)
     double duration =
         duration_cast<microseconds>(end - start).count() / 1000.0;
 
-    cout << "Metodos de forca bruta: Algoritmo Guloso" << endl;
-    cout << "Cores utilizadas: " << max_color + 1 << endl;
-    cout << "Tempo: " << duration << " ms" << endl;
+    cout << "Greedy Coloring" << endl;
+    cout << "Number of colors used: " << max_color + 1 << endl;
+    cout << "Time: " << duration << " ms" << endl;
 
     if (graph->get_vertices_count() < 10)
     {
-        cout << "Coloracao:" << endl;
+        cout << "Coloring:" << endl;
 
         for (auto pair : colors)
         {
-            cout << "Vertice "
+            cout << "Vertex "
                  << pair.first
-                 << " -> Cor "
+                 << " -> Color "
                  << pair.second
                  << endl;
         }
