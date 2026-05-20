@@ -5,7 +5,7 @@ Projeto em C++ para representar grafos com duas implementacoes:
 - `MatrixGraph` (matriz de adjacencia)
 - `ListGraph` (lista de adjacencia)
 
-O programa principal lê um arquivo de entrada e cria o tipo de grafo escolhido via argumento.
+O programa principal lê um arquivo de entrada, cria o tipo de grafo escolhido via argumento e executa apenas o grupo de algoritmos indicado.
 
 ## Pre-requisitos
 
@@ -63,15 +63,24 @@ Os alvos `test-list` e `test-matrix` compilam os binarios de teste em `build/tes
 Depois do build:
 
 ```bash
-./build/main.o <arquivo> <list|matrix>
+./build/main.o <arquivo> <list|matrix> search <start_vertex>
+./build/main.o <arquivo> <list|matrix> coloring
 ```
 
 Exemplos:
 
 ```bash
-./build/main.o graph_examples/1.txt list
-./build/main.o graph_examples/1.txt matrix
+./build/main.o graph_examples/1.txt list search 0
+./build/main.o graph_examples/1.txt matrix coloring
 ```
+
+### Modos de execução
+
+- `search`: executa `bfs`, `dfs` e `dijkstra` a partir do vértice inicial informado.
+- `coloring`: executa `greedy_coloring`, `welsh_powell`, `dsatur` e `brute_force`.
+
+No modo `search`, o argumento `<start_vertex>` é obrigatório.
+No modo `coloring`, esse argumento não deve ser informado.
 
 ## Formato esperado do arquivo de entrada
 
