@@ -7,7 +7,7 @@
 #include <algorithm>
 #include <chrono>
 
-#include "graph.h"
+#include "../graph/graph.h"
 
 using namespace std;
 using namespace std::chrono;
