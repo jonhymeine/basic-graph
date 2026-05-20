@@ -16,6 +16,7 @@
 #include "coloring_algorithms/greedy_coloring.h"
 #include "coloring_algorithms/welsh_powell.h"
 #include "coloring_algorithms/dsatur.h"
+#include "coloring_algorithms/brute_force.h"
 
 using namespace std;
 
@@ -125,6 +126,8 @@ int main(int argc, char *argv[])
   welsh_powell(graph.get());
   cout << endl;
   dsatur(graph.get());
+  cout << endl;
+  brute_force(graph.get());
 
   return 0;
 }
