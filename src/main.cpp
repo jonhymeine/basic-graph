@@ -14,6 +14,7 @@
 #include "search_algorithms/dijkstra.h"
 
 #include "minimum_spanning_tree_algorithms/prim.h"
+#include "minimum_spanning_tree_algorithms/kruskal.h"
 
 #include "coloring_algorithms/greedy_coloring.h"
 #include "coloring_algorithms/welsh_powell.h"
@@ -180,8 +181,14 @@ int main(int argc, char *argv[])
   }
   else if (mode == "mst")
   {
+    cout << "PRIM" << endl;
     PrimMSTResult result = prim_mst(graph.get());
-    print_prim_mst_result(graph.get(), result);
+    print_prim_mst_result(result);
+    cout << endl;
+
+    cout << "KRUSKAL" << endl;
+    KruskalMSTResult kruskal_result = kruskal_mst(graph.get());
+    print_kruskal_mst_result(kruskal_result);
     cout << endl;
   }
 

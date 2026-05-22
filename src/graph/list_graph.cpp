@@ -196,3 +196,21 @@ vector<int> ListGraph::get_vertices()
 
   return result;
 }
+
+unique_ptr<Graph> ListGraph::create_copy_without_edges() const
+{
+  auto copy = make_unique<ListGraph>(is_directed, is_weighted);
+  copy->vertices = vertices;
+  copy->new_vertex_id = new_vertex_id;
+
+  copy->adjacency_list.reserve(vertices.size());
+  for (const auto &pair : vertices)
+  {
+    int vertex_id = pair.first;
+    copy->vertex_id_to_index[vertex_id] = copy->adjacency_list.size();
+    copy->index_to_vertex_id.push_back(vertex_id);
+    copy->adjacency_list.push_back(vector<Edge>());
+  }
+
+  return copy;
+}
