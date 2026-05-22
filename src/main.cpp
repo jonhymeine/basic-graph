@@ -188,7 +188,7 @@ int main(int argc, char *argv[])
 
     cout << "KRUSKAL" << endl;
     KruskalMSTResult kruskal_result = kruskal_mst(graph.get());
-    print_kruskal_mst_result(graph.get(), kruskal_result);
+    print_kruskal_mst_result(kruskal_result);
     cout << endl;
   }
 

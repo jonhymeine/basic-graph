@@ -12,10 +12,10 @@
 #include "../graph/graph.h"
 
 using namespace std;
+using namespace std::chrono;
 
 struct KruskalMSTResult
 {
-  vector<tuple<int, int, float>> edges;
   float total_weight = 0;
   double execution_time_ms = 0;
   bool is_connected = true;
@@ -66,6 +66,7 @@ public:
 inline KruskalMSTResult kruskal_mst(Graph *graph)
 {
   KruskalMSTResult result;
+  vector<tuple<int, int, float>> result_edges;
 
   if (!graph)
     return result;
@@ -75,7 +76,7 @@ inline KruskalMSTResult kruskal_mst(Graph *graph)
   if (vertices.empty())
     return result;
 
-  auto start_time = chrono::high_resolution_clock::now();
+  auto start_time = high_resolution_clock::now();
 
   vector<tuple<float, int, int>> edges;
 
@@ -102,64 +103,28 @@ inline KruskalMSTResult kruskal_mst(Graph *graph)
     {
       ds.unite(u, v);
 
-      result.edges.push_back({u, v, weight});
+      result_edges.push_back({u, v, weight});
       result.total_weight += weight;
     }
   }
 
-  result.is_connected = (result.edges.size() == vertices.size() - 1);
+  result.is_connected = (result_edges.size() == vertices.size() - 1);
 
-  auto end_time = chrono::high_resolution_clock::now();
+  auto end_time = high_resolution_clock::now();
 
-  result.execution_time_ms =
-      chrono::duration<double, milli>(end_time - start_time).count();
+  result.execution_time_ms = duration<double, milli>(end_time - start_time).count();
 
   return result;
 }
 
-inline void print_kruskal_mst_result(Graph *graph, const KruskalMSTResult &result)
+inline void print_kruskal_mst_result(KruskalMSTResult &result)
 {
-  if (!graph)
-    return;
-
-  cout << "Arvore Geradora Minima (Kruskal):" << endl;
-
-  if (result.edges.empty())
-  {
-    cout << "Nenhuma aresta foi selecionada." << endl;
-  }
-  else
-  {
-    for (const auto &[from, to, weight] : result.edges)
-    {
-      cout << from;
-
-      string from_label = graph->get_vertex_label(from);
-      if (!from_label.empty())
-        cout << "(" << from_label << ")";
-
-      cout << " - " << to;
-
-      string to_label = graph->get_vertex_label(to);
-      if (!to_label.empty())
-        cout << "(" << to_label << ")";
-
-      cout << " | peso: " << weight << endl;
-    }
-  }
-
-  cout << "Soma das arestas: " << result.total_weight << endl;
-
-  cout << "Tempo de execucao: "
-       << fixed << setprecision(6)
-       << result.execution_time_ms << " ms" << endl;
+  cout << "Minimum Spanning Tree (Kruskal):" << endl;
+  cout << "Sum of edges: " << result.total_weight << endl;
+  cout << "Execution time: " << fixed << setprecision(6) << result.execution_time_ms << " ms" << endl;
 
   if (!result.is_connected)
-  {
-    cout << "Aviso: o grafo eh desconexo; "
-         << "o resultado representa uma floresta geradora minima."
-         << endl;
-  }
+    cout << "Warning: the graph is disconnected; the result represents a minimum spanning forest." << endl;
 }
 
 #endif
