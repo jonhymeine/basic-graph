@@ -2,23 +2,20 @@
 #define PRIM_H
 
 #include <chrono>
-#include <functional>
 #include <iomanip>
 #include <iostream>
+#include <memory>
 #include <limits>
-#include <queue>
-#include <tuple>
-#include <unordered_map>
 #include <unordered_set>
 #include <vector>
 
 #include "../graph/graph.h"
 
 using namespace std;
+using namespace std::chrono;
 
 struct PrimMSTResult
 {
-  vector<tuple<int, int, float>> edges;
   float total_weight = 0;
   double execution_time_ms = 0;
   bool is_connected = true;
@@ -27,6 +24,7 @@ struct PrimMSTResult
 inline PrimMSTResult prim_mst(Graph *graph)
 {
   PrimMSTResult result;
+  unique_ptr<Graph> mst_graph;
 
   if (!graph)
     return result;
@@ -35,100 +33,61 @@ inline PrimMSTResult prim_mst(Graph *graph)
   if (vertices.empty())
     return result;
 
-  auto start_time = chrono::high_resolution_clock::now();
+  auto start_time = high_resolution_clock::now();
 
-  unordered_map<int, float> key;
-  unordered_map<int, int> parent;
-  unordered_set<int> in_mst;
+  mst_graph = graph->create_copy_without_edges();
 
-  for (int vertex : vertices)
+  unordered_set<int> visited;
+  int next_visited_vertex = vertices.front();
+  visited.insert(next_visited_vertex);
+
+  while (visited.size() < vertices.size())
   {
-    key[vertex] = numeric_limits<float>::infinity();
-    parent[vertex] = -1;
-  }
+    int from_vertex = next_visited_vertex;
+    float smallest_weight = numeric_limits<float>::max();
 
-  priority_queue<pair<float, int>, vector<pair<float, int>>, greater<pair<float, int>>> pq;
-
-  int start_vertex = vertices.front();
-  key[start_vertex] = 0;
-  pq.push({0, start_vertex});
-
-  while (!pq.empty())
-  {
-    auto [current_key, u] = pq.top();
-    pq.pop();
-
-    if (in_mst.find(u) != in_mst.end())
-      continue;
-
-    in_mst.insert(u);
-
-    for (int v : graph->get_neighbors(u))
+    for (int visited_vertex : visited)
     {
-      if (in_mst.find(v) != in_mst.end())
-        continue;
-
-      float weight = graph->get_edge_weight(u, v);
-      if (weight < key[v])
+      for (int neighbor : graph->get_neighbors(visited_vertex))
       {
-        key[v] = weight;
-        parent[v] = u;
-        pq.push({key[v], v});
+        if (visited.find(neighbor) != visited.end())
+          continue;
+
+        float weight = graph->get_edge_weight(visited_vertex, neighbor);
+        if (weight < smallest_weight)
+        {
+          from_vertex = visited_vertex;
+          next_visited_vertex = neighbor;
+          smallest_weight = weight;
+        }
       }
     }
-  }
 
-  result.is_connected = (in_mst.size() == vertices.size());
-
-  for (int vertex : vertices)
-  {
-    if (parent[vertex] != -1)
+    if (visited.find(next_visited_vertex) != visited.end())
     {
-      result.edges.push_back({parent[vertex], vertex, key[vertex]});
-      result.total_weight += key[vertex];
+      result.is_connected = false;
+      break;
     }
+
+    visited.insert(next_visited_vertex);
+    result.total_weight += smallest_weight;
+    mst_graph->add_edge(from_vertex, next_visited_vertex, smallest_weight);
   }
 
-  auto end_time = chrono::high_resolution_clock::now();
-  result.execution_time_ms = chrono::duration<double, milli>(end_time - start_time).count();
+  auto end_time = high_resolution_clock::now();
+  result.execution_time_ms = duration<double, milli>(end_time - start_time).count();
 
   return result;
 }
 
-inline void print_prim_mst_result(Graph *graph, const PrimMSTResult &result)
+inline void print_prim_mst_result(const PrimMSTResult &result)
 {
-  if (!graph)
-    return;
-
-  cout << "Arvore Geradora Minima (Prim):" << endl;
-
-  if (result.edges.empty())
-  {
-    cout << "Nenhuma aresta foi selecionada." << endl;
-  }
-  else
-  {
-    for (const auto &[from, to, weight] : result.edges)
-    {
-      cout << from;
-      string from_label = graph->get_vertex_label(from);
-      if (!from_label.empty())
-        cout << "(" << from_label << ")";
-
-      cout << " - " << to;
-      string to_label = graph->get_vertex_label(to);
-      if (!to_label.empty())
-        cout << "(" << to_label << ")";
-
-      cout << " | peso: " << weight << endl;
-    }
-  }
-
-  cout << "Soma das arestas: " << result.total_weight << endl;
-  cout << "Tempo de execucao: " << fixed << setprecision(6) << result.execution_time_ms << " ms" << endl;
+  cout << "Minimum Spanning Tree (Prim):" << endl;
+  cout << "Sum of edges: " << result.total_weight << endl;
+  cout << "Execution time: " << fixed << setprecision(6) << result.execution_time_ms << " ms" << endl;
 
   if (!result.is_connected)
-    cout << "Aviso: o grafo eh desconexo; o resultado representa apenas a componente alcancada." << endl;
+    cout << "Warning: the graph is disconnected; the result represents only the reachable component." << endl;
 }
 
 #endif

@@ -183,7 +183,7 @@ int main(int argc, char *argv[])
   {
     cout << "PRIM" << endl;
     PrimMSTResult result = prim_mst(graph.get());
-    print_prim_mst_result(graph.get(), result);
+    print_prim_mst_result(result);
     cout << endl;
 
     cout << "KRUSKAL" << endl;
