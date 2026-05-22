@@ -22,6 +22,7 @@ public:
   void print_graph() override;
   vector<int> get_neighbors(int vertex) override;
   vector<int> get_vertices() override;
+  unique_ptr<Graph> create_copy_without_edges() const override;
 
   bool add_edge(int from_vertex, int to_vertex, float weight = 1) override;
   bool remove_edge(int from_vertex, int to_vertex) override;

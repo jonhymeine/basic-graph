@@ -1,6 +1,7 @@
 #ifndef GRAPH_H
 #define GRAPH_H
 
+#include <memory>
 #include <string>
 #include <unordered_map>
 #include <vector>
@@ -29,6 +30,7 @@ public:
   virtual void print_graph() = 0;
   virtual vector<int> get_neighbors(int vertex) = 0;
   virtual vector<int> get_vertices() = 0;
+  virtual unique_ptr<Graph> create_copy_without_edges() const = 0;
 
   virtual bool add_edge(int from_vertex, int to_vertex, float weight) = 0;
   virtual bool remove_edge(int from_vertex, int to_vertex) = 0;

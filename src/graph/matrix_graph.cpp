@@ -156,3 +156,21 @@ vector<int> MatrixGraph::get_vertices()
 
   return result;
 }
+
+unique_ptr<Graph> MatrixGraph::create_copy_without_edges() const
+{
+  auto copy = make_unique<MatrixGraph>(is_directed, is_weighted);
+  copy->vertices = vertices;
+  copy->new_vertex_id = new_vertex_id;
+
+  copy->adjacency_matrix.reserve(vertices.size());
+  for (const auto &pair : vertices)
+  {
+    int vertex_id = pair.first;
+    copy->vertex_id_to_index[vertex_id] = copy->adjacency_matrix.size();
+    copy->index_to_vertex_id.push_back(vertex_id);
+    copy->adjacency_matrix.push_back(vector<float>(vertices.size(), 0));
+  }
+
+  return copy;
+}
