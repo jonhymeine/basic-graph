@@ -22,6 +22,8 @@ public:
     this->is_weighted = is_weighted;
   }
 
+  virtual ~Graph() = default;
+
   virtual int add_vertex(string label = "") = 0;
   virtual bool remove_vertex(int vertex) = 0;
   virtual void print_graph() = 0;
