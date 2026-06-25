@@ -21,6 +21,8 @@
 #include "coloring_algorithms/dsatur.h"
 #include "coloring_algorithms/brute_force.h"
 
+#include "flow_algorithms/ford_fulkerson.h"
+
 using namespace std;
 
 enum class GraphType
@@ -29,7 +31,7 @@ enum class GraphType
   Matrix
 };
 
-Graph *build_graph_from_file(const string &filename, GraphType type)
+Graph *build_graph_from_file(const string &filename, GraphType type, bool print_file_info = true)
 {
   ifstream file(filename);
   if (!file.is_open())
@@ -43,8 +45,11 @@ Graph *build_graph_from_file(const string &filename, GraphType type)
   istringstream iss(line);
   iss >> vertices_count >> edges_count >> is_directed >> is_weighted;
 
-  cout << "Vertices: " << vertices_count << ", Edges: " << edges_count
-       << ", Directed: " << is_directed << ", Weighted: " << is_weighted << endl;
+  if (print_file_info)
+  {
+    cout << "Vertices: " << vertices_count << ", Edges: " << edges_count
+         << ", Directed: " << is_directed << ", Weighted: " << is_weighted << endl;
+  }
 
   Graph *graph;
 
@@ -91,12 +96,12 @@ int main(int argc, char *argv[])
 {
   if (argc < 4)
   {
-    cerr << "Usage:\n  Search: " << argv[0] << " <file> <list|matrix> search <start_vertex>\n  Coloring: " << argv[0] << " <file> <list|matrix> coloring\n  MST: " << argv[0] << " <file> <list|matrix> mst" << endl;
+    cerr << "Usage:\n  Search: " << argv[0] << " <file> <list|matrix> search <start_vertex>\n  Coloring: " << argv[0] << " <file> <list|matrix> coloring\n  MST: " << argv[0] << " <file> <list|matrix> mst\n  Flow: " << argv[0] << " <file> <list|matrix> flow <source> <sink>" << endl;
     return 1;
   }
-  else if (argc > 5)
+  else if (argc > 6)
   {
-    cerr << "Too many arguments. See usage: " << argv[0] << " <file> <list|matrix> [search <start_vertex> | coloring | mst]" << endl;
+    cerr << "Too many arguments. See usage: " << argv[0] << " <file> <list|matrix> [search <start_vertex> | coloring | mst | flow <source> <sink>]" << endl;
     return 1;
   }
 
@@ -104,9 +109,9 @@ int main(int argc, char *argv[])
   const GraphType type = parse_graph_type(argv[2]);
   const string mode = argv[3];
 
-  if (mode != "search" && mode != "coloring" && mode != "mst")
+  if (mode != "search" && mode != "coloring" && mode != "mst" && mode != "flow")
   {
-    cerr << "Invalid mode '" << mode << "'. Use 'search', 'coloring' or 'mst'." << endl;
+    cerr << "Invalid mode '" << mode << "'. Use 'search', 'coloring', 'mst' or 'flow'." << endl;
     return 1;
   }
 
@@ -119,6 +124,12 @@ int main(int argc, char *argv[])
   if ((mode == "coloring" || mode == "mst") && argc != 4)
   {
     cerr << "This mode does not take a start vertex. Usage: " << argv[0] << " <file> <list|matrix> " << mode << endl;
+    return 1;
+  }
+
+  if (mode == "flow" && argc != 6)
+  {
+    cerr << "Flow mode requires source and sink vertices. Usage: " << argv[0] << " <file> <list|matrix> flow <source> <sink>" << endl;
     return 1;
   }
 
@@ -136,7 +147,23 @@ int main(int argc, char *argv[])
     }
   }
 
-  unique_ptr<Graph> graph(build_graph_from_file(filename, type));
+  int source_vertex = -1;
+  int sink_vertex = -1;
+  if (mode == "flow")
+  {
+    try
+    {
+      source_vertex = stoi(argv[4]);
+      sink_vertex = stoi(argv[5]);
+    }
+    catch (...)
+    {
+      cerr << "Invalid source or sink vertex: both must be integers." << endl;
+      return 1;
+    }
+  }
+
+  unique_ptr<Graph> graph(build_graph_from_file(filename, type, mode != "flow"));
 
   if (mode == "search")
   {
@@ -153,12 +180,43 @@ int main(int argc, char *argv[])
     return 1;
   }
 
-  graph->print_graph();
+  if (mode == "flow")
+  {
+    if (source_vertex < 0 || source_vertex >= graph->get_vertices_count())
+    {
+      cerr << "Invalid source vertex: " << source_vertex << ". It should be between 0 and " << graph->get_vertices_count() - 1 << "." << endl;
+      return 1;
+    }
 
-  cout << endl;
+    if (sink_vertex < 0 || sink_vertex >= graph->get_vertices_count())
+    {
+      cerr << "Invalid sink vertex: " << sink_vertex << ". It should be between 0 and " << graph->get_vertices_count() - 1 << "." << endl;
+      return 1;
+    }
 
-  cout << "Execucao dos algoritmos:";
-  cout << endl;
+    if (!graph->is_directed_graph())
+    {
+      cerr << "Flow mode requires a directed graph. Use a file with is_directed = 1." << endl;
+      return 1;
+    }
+
+    if (!graph->is_weighted_graph())
+    {
+      cerr << "Flow mode requires a weighted graph. Use a file with is_weighted = 1." << endl;
+      return 1;
+    }
+  }
+
+  if (mode != "flow")
+    graph->print_graph();
+
+  if (mode != "flow")
+  {
+    cout << endl;
+    cout << "Execucao dos algoritmos:";
+    cout << endl;
+  }
+
   if (mode == "search")
   {
     bfs(graph.get(), start_vertex);
@@ -190,6 +248,15 @@ int main(int argc, char *argv[])
     KruskalMSTResult kruskal_result = kruskal_mst(graph.get());
     print_kruskal_mst_result(kruskal_result);
     cout << endl;
+  }
+  else if (mode == "flow")
+  {
+    float max_flow = ford_fulkerson(graph.get(), source_vertex, sink_vertex);
+
+    cout << "Ford-Fulkerson" << endl;
+    cout << "Origem: " << source_vertex << endl;
+    cout << "Destino: " << sink_vertex << endl;
+    cout << "Fluxo maximo: " << max_flow << endl;
   }
 
   return 0;
