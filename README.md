@@ -24,6 +24,8 @@ O programa principal lê um arquivo de entrada, cria o tipo de grafo escolhido v
   - `dijkstra.h`
 - `src/minimum_spanning_tree_algorithms/`: algoritmo de arvore geradora minima
   - `prim.h`
+- `src/flow_algorithms/`: algoritmo de fluxo maximo
+  - `ford_fulkerson.h`
 - `src/coloring_algorithms/`: algoritmos de coloracao de grafos
   - `greedy_coloring.h`
   - `welsh_powell.h`
@@ -68,6 +70,7 @@ Depois do build:
 ./build/main.o <arquivo> <list|matrix> search <start_vertex>
 ./build/main.o <arquivo> <list|matrix> coloring
 ./build/main.o <arquivo> <list|matrix> mst
+./build/main.o <arquivo> <list|matrix> flow <source> <sink>
 ```
 
 Exemplos:
@@ -75,6 +78,7 @@ Exemplos:
 ```bash
 ./build/main.o graph_examples/1.txt list search 0
 ./build/main.o graph_examples/1.txt matrix coloring
+./build/main.o graph_examples/flow.txt list flow 0 5
 ```
 
 ### Modos de execução
@@ -82,11 +86,14 @@ Exemplos:
 - `search`: executa `bfs`, `dfs` e `dijkstra` a partir do vértice inicial informado.
 - `coloring`: executa `greedy_coloring`, `welsh_powell`, `dsatur` e `brute_force`.
 - `mst`: executa o algoritmo de Prim e exibe a árvore geradora mínima, a soma das arestas e o tempo de execução.
+- `flow`: executa Ford-Fulkerson e exibe o fluxo maximo entre origem (`source`) e destino (`sink`).
 
 O modo `mst` exige um grafo nao direcionado (`is_directed = 0`).
+O modo `flow` exige um grafo direcionado e ponderado (`is_directed = 1` e `is_weighted = 1`), usando o peso de cada aresta como capacidade. Arestas com capacidade `0` sao ignoradas pela busca em profundidade usada para encontrar caminhos aumentantes.
 
 No modo `search`, o argumento `<start_vertex>` é obrigatório.
 No modo `coloring`, esse argumento não deve ser informado.
+No modo `flow`, os argumentos `<source>` e `<sink>` sao obrigatórios.
 
 ## Formato esperado do arquivo de entrada
 
