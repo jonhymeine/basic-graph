@@ -22,6 +22,7 @@
 #include "coloring_algorithms/brute_force.h"
 
 #include "flow_algorithms/ford_fulkerson.h"
+#include "flow_algorithms/local_search_flow.h"
 
 using namespace std;
 
@@ -96,7 +97,8 @@ int main(int argc, char *argv[])
 {
   if (argc < 4)
   {
-    cerr << "Usage:\n  Search: " << argv[0] << " <file> <list|matrix> search <start_vertex>\n  Coloring: " << argv[0] << " <file> <list|matrix> coloring\n  MST: " << argv[0] << " <file> <list|matrix> mst\n  Flow: " << argv[0] << " <file> <list|matrix> flow <source> <sink>" << endl;
+    cerr << "Usage:\n  Search: " << argv[0] << " <file> <list|matrix> search <start_vertex>\n  Coloring: " << argv[0] << " <file> <list|matrix> coloring\n  MST: " << argv[0] << " <file> <list|matrix> mst\n  Flow: " << argv[0] << " <file> <list|matrix> flow <source> <sink>" << "  Flow Local: " << argv[0] << " <file> <list|matrix> flow_local <source> <sink>"
+     << endl;;
     return 1;
   }
   else if (argc > 6)
@@ -109,7 +111,7 @@ int main(int argc, char *argv[])
   const GraphType type = parse_graph_type(argv[2]);
   const string mode = argv[3];
 
-  if (mode != "search" && mode != "coloring" && mode != "mst" && mode != "flow")
+  if (mode != "search" && mode != "coloring" && mode != "mst" && mode != "flow" && mode != "flow_local")
   {
     cerr << "Invalid mode '" << mode << "'. Use 'search', 'coloring', 'mst' or 'flow'." << endl;
     return 1;
@@ -127,7 +129,7 @@ int main(int argc, char *argv[])
     return 1;
   }
 
-  if (mode == "flow" && argc != 6)
+  if (mode == "flow" || mode == "flow_local" && argc != 6)
   {
     cerr << "Flow mode requires source and sink vertices. Usage: " << argv[0] << " <file> <list|matrix> flow <source> <sink>" << endl;
     return 1;
@@ -149,7 +151,7 @@ int main(int argc, char *argv[])
 
   int source_vertex = -1;
   int sink_vertex = -1;
-  if (mode == "flow")
+  if (mode == "flow" || mode == "flow_local")
   {
     try
     {
@@ -180,7 +182,7 @@ int main(int argc, char *argv[])
     return 1;
   }
 
-  if (mode == "flow")
+  if (mode == "flow" || mode == "flow_local")
   {
     if (source_vertex < 0 || source_vertex >= graph->get_vertices_count())
     {
@@ -258,6 +260,22 @@ int main(int argc, char *argv[])
     cout << "Destino: " << sink_vertex << endl;
     cout << "Fluxo maximo: " << max_flow << endl;
   }
+  else if (mode == "flow_local")
+  {
+    float max_flow = ford_fulkerson(graph.get(), source_vertex, sink_vertex);
+
+    cout << "Ford-Fulkerson" << endl;
+    cout << "Origem: " << source_vertex << endl;
+    cout << "Destino: " << sink_vertex << endl;
+    cout << "Fluxo maximo: " << max_flow << endl;
+
+    cout << endl;
+
+    LocalSearchFlowResult local_result =
+        local_search_max_flow(graph.get(), source_vertex, sink_vertex);
+
+    print_local_search_flow_result(local_result);
+}
 
   return 0;
 }
