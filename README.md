@@ -26,6 +26,7 @@ O programa principal lê um arquivo de entrada, cria o tipo de grafo escolhido v
   - `prim.h`
 - `src/flow_algorithms/`: algoritmo de fluxo maximo
   - `ford_fulkerson.h`
+  - `local_search_flow.h`
 - `src/coloring_algorithms/`: algoritmos de coloracao de grafos
   - `greedy_coloring.h`
   - `welsh_powell.h`
@@ -87,13 +88,14 @@ Exemplos:
 - `coloring`: executa `greedy_coloring`, `welsh_powell`, `dsatur` e `brute_force`.
 - `mst`: executa o algoritmo de Prim e exibe a árvore geradora mínima, a soma das arestas e o tempo de execução.
 - `flow`: executa Ford-Fulkerson e exibe o fluxo maximo entre origem (`source`) e destino (`sink`).
+- `flow_local`: executa o Local-Search-Flow e exibe o fluxo maximo entre origem (`source`) e destino (`sink`).
 
 O modo `mst` exige um grafo nao direcionado (`is_directed = 0`).
-O modo `flow` exige um grafo direcionado e ponderado (`is_directed = 1` e `is_weighted = 1`), usando o peso de cada aresta como capacidade. Arestas com capacidade `0` sao ignoradas pela busca em profundidade usada para encontrar caminhos aumentantes.
+O modo `flow` e `flow_local` exige um grafo direcionado e ponderado (`is_directed = 1` e `is_weighted = 1`), usando o peso de cada aresta como capacidade. Arestas com capacidade `0` sao ignoradas pela busca em profundidade usada para encontrar caminhos aumentantes.
 
 No modo `search`, o argumento `<start_vertex>` é obrigatório.
 No modo `coloring`, esse argumento não deve ser informado.
-No modo `flow`, os argumentos `<source>` e `<sink>` sao obrigatórios.
+No modo `flow` e `flow_local`, os argumentos `<source>` e `<sink>` sao obrigatórios.
 
 ## Formato esperado do arquivo de entrada
 
