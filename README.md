@@ -72,6 +72,7 @@ Depois do build:
 ./build/main.o <arquivo> <list|matrix> coloring
 ./build/main.o <arquivo> <list|matrix> mst
 ./build/main.o <arquivo> <list|matrix> flow <source> <sink>
+./build/main.o <arquivo> <list|matrix> flow_local <source> <sink>
 ```
 
 Exemplos:
@@ -80,6 +81,7 @@ Exemplos:
 ./build/main.o graph_examples/1.txt list search 0
 ./build/main.o graph_examples/1.txt matrix coloring
 ./build/main.o graph_examples/flow.txt list flow 0 5
+./build/main.o graph_examples/flow.txt list flow_local 0 5
 ```
 
 ### Modos de execução
